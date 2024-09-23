@@ -1,5 +1,6 @@
-# Zone.Identifier
-*.c:Zone.Identifier
+*
+!*/
+!*.*
 
 # Prerequisites
 *.d
