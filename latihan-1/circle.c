@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define PI 3.14
+#define EPSILON 0.000001
 
 boolean IsCIRCLEValid(float X, float Y, float R) 
 /* Mengirim TRUE jika X, Y, R dapat membentuk Lingkaran C yang valid */
@@ -39,7 +40,7 @@ void ReadCIRCLE(CIRCLE *C)
         valid = IsCIRCLEValid(x, y, r);
         if (valid) {
             CreateCIRCLE(C, x, y, r);
-            return;
+            break;
         }
         printf("CIRCLE tidak valid\n");
     }
@@ -53,7 +54,7 @@ void WriteCIRCLE(CIRCLE C)
  * belakang, atau di antaranya
  */
 {
-    printf("P(%.2f,%.2f)r=%.2f", Absis(Center(C)), Ordinat(Center(C)), Radius(C));
+    printf("P(%.2f,%.2f) r=%.2f", Absis(Center(C)), Ordinat(Center(C)), Radius(C));
 }
 
 /* ***************************************************************** */
@@ -84,7 +85,7 @@ boolean IsPOINTInEdgeCIRCLE(CIRCLE C, POINT P)
 /* Mengirim true jika titik P berada di tepi lingkaran C */
 /* HINT: Gunakan toleransi kecil untuk komparasi float */
 {
-    return fabs(Panjang(Center(C), P) - Radius(C)) < 0.001;
+    return fabs(Panjang(Center(C), P) - Radius(C)) < EPSILON;
 }
 
 boolean IsCIRCLEInsideCIRCLE(CIRCLE C1, CIRCLE C2)

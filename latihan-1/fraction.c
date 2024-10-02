@@ -46,7 +46,7 @@ void ReadFRACTION(FRACTION *F)
         if (!IsFRACTIONValid(n, r)) {
             printf("FRACTION tidak valid\n");
         }
-        else return;
+        else break;
     }
     CreateFRACTION(F, n, r);
  }
@@ -60,8 +60,8 @@ void WriteFRACTION(FRACTION F)
  * NOTE: hasil dalam bentuk paling sederhana
  */
  {
-    int fpb = gcd(Numerator(F), Denominator(F));
-    printf("%d/%d", Numerator(F)/fpb, Denominator(F)/fpb);
+    F = SimplifyFRACTION(F);
+    printf("%d/%d", Numerator(F), Denominator(F));
  }
 
 /* ***************************************************************** */
@@ -98,7 +98,7 @@ FRACTION MultiplyFRACTION(FRACTION F1, FRACTION F2)
     FRACTION FProd = {
         .N = Numerator(F1) * Numerator(F2),
         .D = Denominator(F1) * Denominator(F2)
-    }
+    };
     int fpb = gcd(Numerator(FProd), Denominator(FProd));
     Numerator(FProd) /= fpb;
     Denominator(FProd) /= fpb;
@@ -120,7 +120,9 @@ FRACTION MultiplyNumberFRACTION(int n, FRACTION F1)
 /* Mengirim hasil perkalian n * F1 */
 /* NOTE: hasil dalam bentuk paling sederhana */
 {
-    return MultiplyFRACTION(F1, {.N = n, .R = 1});
+    FRACTION N;
+    CreateFRACTION(&N, n , 1);
+    return MultiplyFRACTION(F1, N);
 }
 
 /* ***************************************************************** */
@@ -130,11 +132,19 @@ FRACTION SimplifyFRACTION(FRACTION F)
 /* Mengembalikan FRACTION dalam bentuk sederhana */
 /* NOTE: pastikan hanya numerator yang memiliki nilai negatif */
 {
-
+    int fpb = gcd(Numerator(F), Denominator(F));
+    Numerator(F) /= fpb;
+    Denominator(F) /= fpb;
+    if (Denominator(F) < 0 && Numerator(F) > 0) {
+        Denominator(F) *= -1;
+        Numerator(F) *= -1;
+    }
+    return F;
 }
 
 float ToDecimal(FRACTION F)
 /* Mengonversi FRACTION ke bentuk desimal */
 {
-
+    float f = (float) Numerator(F) / Denominator(F);
+    return f;
 }
